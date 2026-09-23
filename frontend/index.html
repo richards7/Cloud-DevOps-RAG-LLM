@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cloud & DevOps RAG Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- Sidebar: the knowledge base, made visible instead of hidden -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-name">Cloud & DevOps<br/>RAG Assistant</div>
+      </div>
+    </div>
+
+    <div class="kb-section">
+      <h2>Knowledge base</h2>
+      <ul class="kb-list" id="kb-list">
+        <li class="kb-item"><span class="dot"></span> docker_basics.md</li>
+        <li class="kb-item"><span class="dot"></span> gcp_aws_mapping.md</li>
+        <li class="kb-item"><span class="dot"></span> kubernetes_basics.md</li>
+        <li class="kb-item"><span class="dot"></span> cicd_concepts.md</li>
+        <li class="kb-item"><span class="dot"></span> rest_api_fundamentals.md</li>
+        <li class="kb-item"><span class="dot"></span> networking_iam.md</li>
+      </ul>
+    </div>
+
+    <div class="status-block">
+      <div class="status-row"><span>api</span><span id="api-status" class="status-ok">checking…</span></div>
+      <div class="status-row"><span>providers</span><span>gemini → openai</span></div>
+      <div class="status-row"><span>store</span><span>chroma (local)</span></div>
+    </div>
+  </aside>
+
+  <!-- Main chat column -->
+  <main class="main">
+    <div class="main-header">
+      <h1>Ask about cloud & DevOps</h1>
+      <p>Answers are grounded in the knowledge base on the left — not general model knowledge.</p>
+    </div>
+
+    <div class="messages" id="messages">
+      <div class="empty-state" id="empty-state">
+        <div class="prompt-glyph">&gt;_</div>
+        <p>Ask a question about Docker, GCP/AWS, Kubernetes, CI/CD, REST APIs, or IAM.<br/>Each answer shows its sources and which LLM responded.</p>
+        <div class="suggestion-row">
+          <button class="suggestion-chip" data-q="What is the difference between a Docker image and a container?">Docker image vs container</button>
+          <button class="suggestion-chip" data-q="What is the GCP equivalent of AWS EC2 and S3?">GCP vs AWS equivalents</button>
+          <button class="suggestion-chip" data-q="What is the principle of least privilege in IAM?">Least privilege in IAM</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="composer">
+      <div class="composer-inner">
+        <textarea id="query-input" rows="1" placeholder="Ask a cloud/DevOps question…"></textarea>
+        <button class="send-btn" id="send-btn" aria-label="Send">↑</button>
+      </div>
+      <div class="composer-hint">Enter to send · Shift+Enter for a new line</div>
+    </div>
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

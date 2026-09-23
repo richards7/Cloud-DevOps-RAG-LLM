@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cloud & DevOps RAG Assistant — retrieval-grounded, multi-LLM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<style>
+  .landing { max-width: 880px; margin: 0 auto; padding: 0 24px 100px; }
+
+  .lp-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 0; max-width: 880px; margin: 0 auto;
+  }
+  .lp-nav .brand { display: flex; align-items: center; gap: 10px; }
+  .lp-nav a.cta {
+    font-family: var(--font-mono); font-size: 12.5px;
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: 6px;
+    text-decoration: none; color: var(--text);
+  }
+  .lp-nav a.cta:hover { border-color: var(--accent-dim); }
+
+  .hero { padding: 60px 0 50px; }
+  .terminal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 18px 20px; font-family: var(--font-mono);
+    font-size: 13.5px; line-height: 1.8; max-width: 620px;
+  }
+  .terminal .prompt-line { color: var(--text-dim); }
+  .terminal .prompt-line .arrow { color: var(--accent); }
+  .terminal .typed { color: var(--text); }
+  .terminal .cursor {
+    display: inline-block; width: 7px; height: 15px; background: var(--accent);
+    vertical-align: middle; margin-left: 2px; animation: caret 1s steps(1) infinite;
+  }
+  @keyframes caret { 50% { opacity: 0; } }
+  .terminal .response { color: var(--text-dim); margin-top: 10px; }
+
+  .hero h1 {
+    font-size: 30px; line-height: 1.35; margin: 30px 0 12px;
+    font-weight: 600; max-width: 600px;
+  }
+  .hero p.lede { color: var(--text-dim); font-size: 15px; max-width: 520px; line-height: 1.6; }
+
+  .pipeline { padding: 40px 0; border-top: 1px solid var(--border); }
+  .pipeline h2 { font-size: 13px; color: var(--text-dim); font-weight: 500; margin: 0 0 24px; }
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: grid; grid-template-columns: 32px 1fr; gap: 14px;
+    padding: 16px 0; border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: var(--font-mono); color: var(--accent); font-size: 13px; padding-top: 2px;
+  }
+  .step-body h3 { margin: 0 0 4px; font-size: 14.5px; font-weight: 600; }
+  .step-body p { margin: 0; font-size: 13.5px; color: var(--text-dim); line-height: 1.6; }
+
+  .features { padding: 40px 0; border-top: 1px solid var(--border); }
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden;
+  }
+  .feature {
+    background: var(--surface); padding: 20px;
+  }
+  .feature h3 { font-size: 13.5px; margin: 0 0 6px; }
+  .feature p { font-size: 12.5px; color: var(--text-dim); margin: 0; line-height: 1.6; }
+  .feature .tag-row { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .feature .tag { font-family: var(--font-mono); font-size: 10.5px; padding: 2px 7px; border: 1px solid var(--border); border-radius: 4px; color: var(--text-dim); }
+
+  .lp-footer {
+    padding: 30px 0; border-top: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim);
+    display: flex; justify-content: space-between;
+  }
+
+  @media (max-width: 640px) {
+    .feature-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="lp-nav">
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <span class="brand-name">Cloud & DevOps RAG Assistant</span>
+  </div>
+  <a class="cta" href="index.html">Open assistant →</a>
+</nav>
+
+<div class="landing">
+
+  <section class="hero">
+    <div class="terminal">
+      <div class="prompt-line"><span class="arrow">›</span> <span class="typed">What's the difference between Cloud Run and GKE?</span><span class="cursor"></span></div>
+      <div class="response">retrieved 3 chunks · gcp_aws_mapping.md, kubernetes_basics.md<br/>answered by gemini · 640ms</div>
+    </div>
+
+    <h1>A chatbot that answers from your documents, not its training data — and doesn't go down when one API does.</h1>
+    <p class="lede">
+      Retrieval-augmented generation over a cloud & DevOps knowledge base,
+      with automatic fallback across multiple LLM providers. Built to show
+      its work: every answer names its sources and which model produced it.
+    </p>
+  </section>
+
+  <section class="pipeline">
+    <h2>How a question becomes an answer</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Retrieve</h3>
+          <p>The query is embedded and matched against a local Chroma vector store built from the markdown files in the knowledge base.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Ground the prompt</h3>
+          <p>The retrieved chunks are inserted into the prompt as context, so the model answers from what's actually in the docs.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Route to a provider</h3>
+          <p>Gemini is tried first; if it fails or times out, the router falls back to OpenAI automatically — no dropped request.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Log and return</h3>
+          <p>The query, sources, provider, and latency are logged to a database, separate from the knowledge base itself.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>How it's built</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <h3>Provider-agnostic by design</h3>
+        <p>An abstract LLM interface means adding a third provider is a new file, not a rewrite.</p>
+        <div class="tag-row"><span class="tag">abstraction</span><span class="tag">router.py</span></div>
+      </div>
+      <div class="feature">
+        <h3>Local embeddings</h3>
+        <p>Retrieval doesn't depend on an external embedding API — one less thing that can fail.</p>
+        <div class="tag-row"><span class="tag">chromadb</span></div>
+      </div>
+      <div class="feature">
+        <h3>Cloud-native deploy</h3>
+        <p>Containerized with Docker, deployed to Cloud Run — stateless, scales to zero.</p>
+        <div class="tag-row"><span class="tag">docker</span><span class="tag">cloud run</span></div>
+      </div>
+      <div class="feature">
+        <h3>Operational visibility</h3>
+        <p>Every chat is logged with its provider and latency — the start of real observability.</p>
+        <div class="tag-row"><span class="tag">sqlite</span><span class="tag">sqlalchemy</span></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="lp-footer">
+  <div class="landing" style="display:flex; justify-content:space-between; width:100%; padding:0;">
+    <span>cloud-rag-assistant</span>
+    <span>fastapi · chroma · gemini · openai</span>
+  </div>
+</footer>
+
+</body>
+</html>
