@@ -3,6 +3,7 @@ import time
 import logging
 
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
 from app.schemas import ChatRequest, ChatResponse, SourceChunk
@@ -61,3 +62,5 @@ def chat(request: ChatRequest, db: Session = Depends(get_db)):
         sources=[SourceChunk(**c) for c in chunks],
         latency_ms=latency_ms,
     )
+
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
