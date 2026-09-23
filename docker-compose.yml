@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  rag-assistant:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./vectorstore:/app/vectorstore
+      - ./chat_logs.db:/app/chat_logs.db
