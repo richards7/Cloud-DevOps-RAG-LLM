@@ -1,6 +1,7 @@
 import json
 import time
 import logging
+import os
 
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
@@ -63,4 +64,6 @@ def chat(request: ChatRequest, db: Session = Depends(get_db)):
         latency_ms=latency_ms,
     )
 
-app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
+# Use absolute path for frontend directory to avoid working directory issues
+frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
