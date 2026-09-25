@@ -3,7 +3,7 @@
  * Talks to the FastAPI backend at API_BASE (/health, /chat).
  */
 
-const API_BASE = window.API_BASE || "http://localhost:8080";
+const API_BASE = window.API_BASE || "";
 
 const messagesEl = document.getElementById("messages");
 const emptyStateEl = document.getElementById("empty-state");

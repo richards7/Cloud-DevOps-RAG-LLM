@@ -1,10 +1,9 @@
 import json
 import time
 import logging
-import os
 
 from fastapi import FastAPI, Depends, HTTPException
-from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from app.schemas import ChatRequest, ChatResponse, SourceChunk
@@ -19,21 +18,26 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Cloud & DevOps RAG Assistant",
-    description="A RAG-powered chatbot answering cloud/DevOps questions, "
-                 "with automatic fallback across multiple LLM providers.",
+    description="A RAG-powered chatbot answering cloud/DevOps questions.",
     version="1.0.0",
 )
 
+# Add CORS middleware for frontend decoupling
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 def on_startup():
     init_db()
 
-
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest, db: Session = Depends(get_db)):
@@ -63,7 +67,3 @@ def chat(request: ChatRequest, db: Session = Depends(get_db)):
         sources=[SourceChunk(**c) for c in chunks],
         latency_ms=latency_ms,
     )
-
-# Use absolute path for frontend directory to avoid working directory issues
-frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
-app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")

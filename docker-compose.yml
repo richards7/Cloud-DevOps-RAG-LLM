@@ -1,12 +1,35 @@
 version: "3.9"
 
 services:
-  rag-assistant:
-    build: .
-    ports:
-      - "8080:8080"
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag_backend
     env_file:
       - .env
     volumes:
       - ./vectorstore:/app/vectorstore
       - ./chat_logs.db:/app/chat_logs.db
+    # Not mapping port 8080 to the host so it isn't directly exposed.
+    # We will access the API via the frontend nginx proxy on port 80.
+    networks:
+      - rag_network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: rag_frontend
+    ports:
+      - "8082:80"
+    depends_on:
+      - backend
+    networks:
+      - rag_network
+    restart: unless-stopped
+
+networks:
+  rag_network:
+    driver: bridge

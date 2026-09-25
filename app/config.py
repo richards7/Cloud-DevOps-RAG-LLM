@@ -6,10 +6,8 @@ load_dotenv()
 
 class Settings:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
-    GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
-    OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
 
     VECTORSTORE_DIR = os.getenv("VECTORSTORE_DIR", "vectorstore")
     DATA_DIR = os.getenv("DATA_DIR", "data/raw")

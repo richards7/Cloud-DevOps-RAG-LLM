@@ -5,7 +5,6 @@ This is the "connecting APIs of different LLMs" piece of the project.
 """
 import logging
 from app.llm.gemini_provider import GeminiProvider
-from app.llm.openai_provider import OpenAIProvider
 from app.config import settings
 
 logger = logging.getLogger(__name__)
@@ -17,13 +16,11 @@ class LLMRouter:
 
         if settings.GEMINI_API_KEY:
             self.providers.append(GeminiProvider())
-        if settings.OPENAI_API_KEY:
-            self.providers.append(OpenAIProvider())
 
         if not self.providers:
             raise ValueError(
-                "No LLM providers configured. Set GEMINI_API_KEY and/or "
-                "OPENAI_API_KEY in your .env file."
+                "No LLM providers configured. Set GEMINI_API_KEY "
+                "in your .env file."
             )
 
     def generate(self, prompt: str) -> dict:
